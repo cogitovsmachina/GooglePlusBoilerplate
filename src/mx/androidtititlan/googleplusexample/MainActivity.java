@@ -12,18 +12,16 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.PlusClient;
 
-public class MainActivity extends Activity implements OnClickListener, ConnectionCallbacks,
-		OnConnectionFailedListener {
+public class MainActivity extends Activity implements OnClickListener,
+		ConnectionCallbacks, OnConnectionFailedListener {
 	private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 	private ProgressDialog mConnectionProgressDialog;
 	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
-//	private SignInButton signInButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +32,10 @@ public class MainActivity extends Activity implements OnClickListener, Connectio
 		mConnectionProgressDialog = new ProgressDialog(this);
 		mConnectionProgressDialog.setMessage("Signin in...");
 		setContentView(R.layout.activity_main);
-//		signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 		findViewById(R.id.sign_in_button).setOnClickListener(this);
 
 	}
+
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
@@ -106,7 +104,6 @@ public class MainActivity extends Activity implements OnClickListener, Connectio
 
 	@Override
 	public void onConnected(Bundle arg0) {
-		// No problem
 		mConnectionProgressDialog.dismiss();
 		Toast.makeText(this, "User has connected", Toast.LENGTH_SHORT).show();
 	}
@@ -135,9 +132,6 @@ public class MainActivity extends Activity implements OnClickListener, Connectio
 
 	@Override
 	public void onDisconnected() {
-		// TODO Auto-generated method stub
-
 	}
-
 
 }
