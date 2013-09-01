@@ -4,17 +4,20 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.PlusShare;
 
 public class MainActivity extends Activity implements OnClickListener,
 		ConnectionCallbacks, OnConnectionFailedListener {
@@ -22,6 +25,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private ProgressDialog mConnectionProgressDialog;
 	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
+	private Button deepShare;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +37,8 @@ public class MainActivity extends Activity implements OnClickListener,
 		mConnectionProgressDialog.setMessage("Signin in...");
 		setContentView(R.layout.activity_main);
 		findViewById(R.id.sign_in_button).setOnClickListener(this);
-
+		deepShare = (Button) findViewById(R.id.deeplink);
+		deepShare.setOnClickListener(this);
 	}
 
 	@Override
@@ -52,6 +57,15 @@ public class MainActivity extends Activity implements OnClickListener,
 							.show();
 				}
 			}
+		}
+		if (view.getId() == R.id.deeplink) {
+			Intent shareIntent = new PlusShare.Builder(this)
+					.setText("Este es mi ejemplo: http://androidtitlan.mx")
+					.setType("text/plain")
+					.setContentUrl(Uri.parse("http://androidtitlan.mx"))
+					.getIntent();
+			startActivityForResult(shareIntent, 0);
+
 		}
 	}
 
