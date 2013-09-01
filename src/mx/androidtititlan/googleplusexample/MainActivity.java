@@ -8,19 +8,22 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.PlusClient;
 
-public class MainActivity extends Activity implements ConnectionCallbacks,
+public class MainActivity extends Activity implements OnClickListener, ConnectionCallbacks,
 		OnConnectionFailedListener {
 	private static final int REQUEST_CODE_RESOLVE_ERR = 9000;
 	private ProgressDialog mConnectionProgressDialog;
 	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
+//	private SignInButton signInButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +34,13 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 		mConnectionProgressDialog = new ProgressDialog(this);
 		mConnectionProgressDialog.setMessage("Signin in...");
 		setContentView(R.layout.activity_main);
-		findViewById(R.id.sign_in_button);
+//		signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+		findViewById(R.id.sign_in_button).setOnClickListener(this);
 
 	}
-
-	public void SignInGooglePlus(View v) {
-		if (!mPlusClient.isConnected()) {
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
 			if (mConnectionResult == null) {
 				mConnectionProgressDialog.show();
 			} else {
@@ -46,6 +50,8 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 				} catch (SendIntentException e) {
 					mConnectionResult = null;
 					mPlusClient.connect();
+					Toast.makeText(this, "Connected!", Toast.LENGTH_SHORT)
+							.show();
 				}
 			}
 		}
@@ -132,5 +138,6 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 		// TODO Auto-generated method stub
 
 	}
+
 
 }
