@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
@@ -28,13 +31,54 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 		mConnectionProgressDialog = new ProgressDialog(this);
 		mConnectionProgressDialog.setMessage("Signin in...");
 		setContentView(R.layout.activity_main);
+		findViewById(R.id.sign_in_button);
+
+	}
+
+	public void SignInGooglePlus(View v) {
+		if (!mPlusClient.isConnected()) {
+			if (mConnectionResult == null) {
+				mConnectionProgressDialog.show();
+			} else {
+				try {
+					mConnectionResult.startResolutionForResult(this,
+							REQUEST_CODE_RESOLVE_ERR);
+				} catch (SendIntentException e) {
+					mConnectionResult = null;
+					mPlusClient.connect();
+				}
+			}
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.action_signout:
+			doGooglePlusSignOut();
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+
+	private void doGooglePlusSignOut() {
+		if (mPlusClient.isConnected()) {
+			mPlusClient.clearDefaultAccount();
+			mPlusClient.disconnect();
+			mPlusClient.connect();
+			Toast.makeText(this, "SignOut", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
@@ -58,6 +102,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
 	public void onConnected(Bundle arg0) {
 		// No problem
 		mConnectionProgressDialog.dismiss();
+		Toast.makeText(this, "User has connected", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
