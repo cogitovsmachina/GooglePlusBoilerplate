@@ -26,6 +26,7 @@ public class MainActivity extends Activity implements OnClickListener,
 	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
 	private Button deepShare;
+	private Button shareButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +40,14 @@ public class MainActivity extends Activity implements OnClickListener,
 		findViewById(R.id.sign_in_button).setOnClickListener(this);
 		deepShare = (Button) findViewById(R.id.deeplink);
 		deepShare.setOnClickListener(this);
+		shareButton = (Button) findViewById(R.id.simpleshare_button);
+		shareButton.setOnClickListener(this);
+
 	}
 
 	@Override
 	public void onClick(View view) {
+
 		if (view.getId() == R.id.sign_in_button && !mPlusClient.isConnected()) {
 			if (mConnectionResult == null) {
 				mConnectionProgressDialog.show();
@@ -58,6 +63,7 @@ public class MainActivity extends Activity implements OnClickListener,
 				}
 			}
 		}
+
 		if (view.getId() == R.id.deeplink) {
 			Intent shareIntent = new PlusShare.Builder(this)
 					.setText("Este es mi ejemplo: http://androidtitlan.mx")
@@ -65,7 +71,18 @@ public class MainActivity extends Activity implements OnClickListener,
 					.setContentUrl(Uri.parse("http://androidtitlan.mx"))
 					.getIntent();
 			startActivityForResult(shareIntent, 0);
+		}
 
+		if (view.getId() == R.id.simpleshare_button) {
+			// Launch the Google+ share dialog with attribution to your
+			// app.
+			Intent shareIntent = new PlusShare.Builder(this)
+					.setType("text/plain")
+					.setText("Testing Share button in Android SDK :).")
+					.setContentUrl(Uri.parse("http://about.me/nRike"))
+					.getIntent();
+
+			startActivityForResult(shareIntent, 0);
 		}
 	}
 
@@ -108,9 +125,7 @@ public class MainActivity extends Activity implements OnClickListener,
 							REQUEST_CODE_RESOLVE_ERR);
 				} catch (SendIntentException exception) {
 					mPlusClient.connect();
-
 				}
-
 			}
 		}
 		mConnectionResult = result;

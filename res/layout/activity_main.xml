@@ -22,7 +22,15 @@
         android:layout_below="@+id/sign_in_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:onClick="doDeepLinkShare"
         android:text="@string/deeplink" />
+
+    <Button
+        android:id="@+id/simpleshare_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/deeplink"
+        android:layout_below="@+id/deeplink"
+        android:layout_marginTop="50dp"
+        android:text="@string/simpleshare" />
 
 </RelativeLayout>

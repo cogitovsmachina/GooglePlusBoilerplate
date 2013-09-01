@@ -6,5 +6,6 @@
     <string name="action_signout">Signout</string>
     <string name="hello_world">Hello world!</string>
     <string name="deeplink">Deep link share</string>
+    <string name="simpleshare">Simple share</string>
 
 </resources>
